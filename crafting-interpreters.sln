@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{1091F641-71F3-45CA-B287-8BFA05DE86B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "csharplox", "csharp\csharplox\csharplox.csproj", "{9A992276-E46C-4EB1-A0CF-57F27D726D0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A992276-E46C-4EB1-A0CF-57F27D726D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A992276-E46C-4EB1-A0CF-57F27D726D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A992276-E46C-4EB1-A0CF-57F27D726D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A992276-E46C-4EB1-A0CF-57F27D726D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9A992276-E46C-4EB1-A0CF-57F27D726D0C} = {1091F641-71F3-45CA-B287-8BFA05DE86B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7293CB1D-C0E7-4848-9C94-B0220FD1E4A9}
+	EndGlobalSection
+EndGlobal
