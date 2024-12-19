@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// https://aka.ms/new-console-template for more information
 using System.Text;
 using csharplox;
 
@@ -31,13 +31,10 @@ public class Lox
 
     private static void RunPrompt()
     {
-        var input = Console.ReadLine();
-        var reader = new StreamReader(input);
-
         while(true)
         {
             Console.WriteLine("> ");
-            string line = reader.ReadLine();
+            string line = Console.ReadLine();
             if (line == null)
             {
                 break;
@@ -59,7 +56,7 @@ public class Lox
         }
     }
 
-    private static void Error(int line, string message)
+    public static void Error(int line, string message)
     {
         Report(line, "", message);
     }
