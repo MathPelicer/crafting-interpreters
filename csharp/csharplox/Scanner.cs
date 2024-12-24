@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Globalization;
 
 namespace csharplox;
@@ -6,6 +7,24 @@ public class Scanner(string source)
 {
     private readonly string _source = source;
     private readonly List<Token> _tokens = [];
+    private static readonly Dictionary<string, TokenType> _keywords = new(){
+        {"and", TokenType.AND},
+        {"class", TokenType.CLASS},
+        {"else", TokenType.ELSE},
+        {"false", TokenType.FALSE},
+        {"for", TokenType.FOR},
+        {"fun", TokenType.FUN},
+        {"if", TokenType.IF},
+        {"nil", TokenType.NIL},
+        {"or", TokenType.OR},
+        {"print", TokenType.PRINT},
+        {"return", TokenType.RETURN},
+        {"super", TokenType.SUPER},
+        {"this", TokenType.THIS},
+        {"true", TokenType.TRUE},
+        {"var", TokenType.VAR},
+        {"while", TokenType.WHILE},
+    };
     private int start = 0;
     private int current = 0;
     private int line = 1;
@@ -74,6 +93,10 @@ public class Scanner(string source)
                 if(IsDigit(c))
                 {
                     Number();
+                }
+                else if (IsAlpha(c))
+                {
+                    Identifier();
                 }
                 else
                 {
@@ -181,5 +204,31 @@ public class Scanner(string source)
         }
 
         AddToken(TokenType.NUMBER, double.Parse(_source.Substring(start, current)));
+    }
+
+    private void Identifier()
+    {
+        while(IsAlphaNumeric(Peek()))
+        {
+            Advance();
+        }
+
+        var text = _source.Substring(start, current);
+        if(!_keywords.TryGetValue(text, out TokenType type))
+        {
+            type = TokenType.IDENTIFIER;
+        }
+
+        AddToken(type);
+    }
+
+    private static bool IsAlpha(char c)
+    {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    private static bool IsAlphaNumeric(char c)
+    {
+        return IsAlpha(c) || IsDigit(c);
     }
 }
