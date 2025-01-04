@@ -31,7 +31,7 @@ public class Scanner(string source)
 
     public List<Token> ScanTokens()
     {
-        while(!IsAtEnd())
+        while (!IsAtEnd())
         {
             start = current;
             ScanToken();
@@ -47,7 +47,7 @@ public class Scanner(string source)
         char c = Advance();
         switch (c)
         {
-            case '(': AddToken(TokenType.LEFT_PAREN); break; 
+            case '(': AddToken(TokenType.LEFT_PAREN); break;
             case ')': AddToken(TokenType.RIGHT_PAREN); break;
             case '{': AddToken(TokenType.LEFT_BRACE); break;
             case '}': AddToken(TokenType.RIGHT_BRACE); break;
@@ -67,12 +67,12 @@ public class Scanner(string source)
                 AddToken(IsMatch('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
                 break;
             case '>':
-                AddToken(IsMatch('=') ? TokenType.GREATER_EQUAL: TokenType.GREATER);
+                AddToken(IsMatch('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                 break;
             case '/':
-                if(IsMatch('/'))
+                if (IsMatch('/'))
                 {
-                    while(Peek() != '\n' && !IsAtEnd()) Advance();
+                    while (Peek() != '\n' && !IsAtEnd()) Advance();
                 }
                 else
                 {
@@ -90,7 +90,7 @@ public class Scanner(string source)
                 String();
                 break;
             default:
-                if(IsDigit(c))
+                if (IsDigit(c))
                 {
                     Number();
                 }
@@ -109,7 +109,7 @@ public class Scanner(string source)
     private char Advance()
     {
         current++;
-        return _source.ElementAt(current-1);
+        return _source.ElementAt(current - 1);
     }
 
     private void AddToken(TokenType tokenType)
@@ -123,19 +123,19 @@ public class Scanner(string source)
         _tokens.Add(new Token(tokenType, text, literal, line));
     }
 
-    private bool IsAtEnd() 
+    private bool IsAtEnd()
     {
         return current >= _source.Length;
     }
 
     private bool IsMatch(char expected)
     {
-        if(IsAtEnd())
+        if (IsAtEnd())
         {
             return false;
         }
 
-        if(_source.ElementAt(current) != expected)
+        if (_source.ElementAt(current) != expected)
         {
             return false;
         }
@@ -146,58 +146,59 @@ public class Scanner(string source)
 
     private char Peek()
     {
-        if(IsAtEnd()) return '\0';
+        if (IsAtEnd()) return '\0';
         return _source.ElementAt(current);
     }
 
     private char PeekNext()
     {
-        if(current+1 >= _source.Length)
+        if (current + 1 >= _source.Length)
         {
             return '\0';
         }
 
-        return _source.ElementAt(current+1);
+        return _source.ElementAt(current + 1);
     }
 
     private void String()
     {
-        while(Peek() != '"' && !IsAtEnd())
+        while (Peek() != '"' && !IsAtEnd())
         {
-            if(Peek() == '\n')
+            if (Peek() == '\n')
             {
                 line++;
             }
             Advance();
         }
 
-        if(IsAtEnd())
+        if (IsAtEnd())
         {
             Lox.Error(line, "Unterminated string.");
             return;
         }
 
         Advance();
-        var value = _source.Substring(start+1, current-1);
+        var value = _source.Substring(start + 1, current - 1);
         AddToken(TokenType.STRING, value);
     }
 
     private static bool IsDigit(char c)
     {
-        return c >= '0' && c <= '9';   
+        return c >= '0' && c <= '9';
     }
 
     private void Number()
     {
-        while(IsDigit(Peek()))
+        while (IsDigit(Peek()))
         {
             Advance();
         }
 
-        if(Peek() == '.' && IsDigit(PeekNext())){
+        if (Peek() == '.' && IsDigit(PeekNext()))
+        {
             Advance();
 
-            while(IsDigit(Peek()))
+            while (IsDigit(Peek()))
             {
                 Advance();
             }
@@ -208,13 +209,13 @@ public class Scanner(string source)
 
     private void Identifier()
     {
-        while(IsAlphaNumeric(Peek()))
+        while (IsAlphaNumeric(Peek()))
         {
             Advance();
         }
 
         var text = _source.Substring(start, current);
-        if(!_keywords.TryGetValue(text, out TokenType type))
+        if (!_keywords.TryGetValue(text, out TokenType type))
         {
             type = TokenType.IDENTIFIER;
         }
