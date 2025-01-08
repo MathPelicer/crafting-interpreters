@@ -6,19 +6,19 @@ public class Lox
 {
     public static bool hadError = false;
 
-    // public static void Main(string[] args){
-    //     if (args.Length == 0)
-    //     {
-    //         Console.WriteLine("Usage: csharplox [script]");
-    //         Environment.Exit(64);
-    //     }
-    //     else if (args.Length == 1){
-    //         RunFiles(args[0]);
-    //     }
-    //     else{
-    //         RunPrompt();
-    //     }
-    // }
+    public static void Main(string[] args){
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Usage: csharplox [script]");
+            Environment.Exit(64);
+        }
+        else if (args.Length == 1){
+            RunFiles(args[0]);
+        }
+        else{
+            RunPrompt();
+        }
+    }
     private static void RunFiles(string path)
     {
         byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
