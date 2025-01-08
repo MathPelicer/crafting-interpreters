@@ -5,10 +5,10 @@ namespace csharplox;
 
 public class Token
 {
-    readonly TokenType _type;
-    readonly string _lexeme;
-    readonly Object _literal;
-    readonly int _line;
+    public readonly TokenType _type;
+    public readonly string _lexeme;
+    public readonly Object _literal;
+    public readonly int _line;
 
     public Token(TokenType tokenType, string lexeme, Object literal, int line)
     {

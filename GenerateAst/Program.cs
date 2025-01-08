@@ -65,11 +65,11 @@
         {
             var name = field.TrimStart().Split(' ')[1];
             var type = field.TrimStart().Split(' ')[0];
-            sw.WriteLine($"        private readonly {type} {name};");
+            sw.WriteLine($"        public readonly {type} {name};");
         }
 
         sw.WriteLine();
-        sw.WriteLine($"        {className} ({fields})" + "{");
+        sw.WriteLine($"        public {className} ({fields})" + "{");
 
         foreach (var field in fields.Split(','))
         {

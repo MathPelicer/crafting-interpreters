@@ -8,11 +8,11 @@ abstract class Expr{
         public T VisitUnaryExpr(Unary expr);
     }
     public class Binary : Expr{
-        private readonly Expr left;
-        private readonly Token op;
-        private readonly Expr right;
+        public readonly Expr left;
+        public readonly Token op;
+        public readonly Expr right;
 
-        Binary (Expr left, Token op, Expr right){
+        public Binary (Expr left, Token op, Expr right){
             this.left = left;
             this.op = op;
             this.right = right;
@@ -24,9 +24,9 @@ abstract class Expr{
     }
 
     public class Grouping : Expr{
-        private readonly Expr expression;
+        public readonly Expr expression;
 
-        Grouping (Expr expression){
+        public Grouping (Expr expression){
             this.expression = expression;
         }
 
@@ -36,9 +36,9 @@ abstract class Expr{
     }
 
     public class Literal : Expr{
-        private readonly Object value;
+        public readonly Object value;
 
-        Literal (Object value){
+        public Literal (Object value){
             this.value = value;
         }
 
@@ -48,10 +48,10 @@ abstract class Expr{
     }
 
     public class Unary : Expr{
-        private readonly Token op;
-        private readonly Expr right;
+        public readonly Token op;
+        public readonly Expr right;
 
-        Unary (Token op, Expr right){
+        public Unary (Token op, Expr right){
             this.op = op;
             this.right = right;
         }
