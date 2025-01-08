@@ -28,21 +28,38 @@
         sw.WriteLine("");
         sw.WriteLine($"abstract class {baseName}" + "{");
 
+        DefineVisitor(sw, baseName, types);
         foreach (var type in types)
         {
             var className = type.Split(':')[0].Trim();
             var fields = type.Split(':')[1].Trim();
 
             DefineType(sw, baseName, className, fields);
+            
         }
-
+        sw.WriteLine("");
+        sw.WriteLine("    public abstract T Accept<T>(IVisitor<T> visitor);");
+    
         sw.WriteLine("}");
         sw.Close();
+     }
+
+    private static void DefineVisitor(StreamWriter sw, string baseName, List<string> types)
+    {
+        sw.WriteLine("    public interface IVisitor<T> {");
+
+        foreach (var type in types)
+        {
+            var typeName = type.Split(":")[0].Trim();
+            sw.WriteLine($"        public T Visit{typeName}{baseName}({typeName} {baseName.ToLower()});");
+        }
+
+        sw.WriteLine("    }");
     }
 
     private static void DefineType(StreamWriter sw, string baseName, string className, string fields)
     {
-        sw.WriteLine($"    class {className} : {baseName}" + "{");
+        sw.WriteLine($"    public class {className} : {baseName}" + "{");
 
         foreach (var field in fields.Split(','))
         {
@@ -61,7 +78,13 @@
         }
 
         sw.WriteLine("        }");
+
         sw.WriteLine();
+        sw.WriteLine("        public override T Accept<T>(IVisitor<T> visitor){");
+        sw.WriteLine($"            return visitor.Visit{className}{baseName}(this);");
+        sw.WriteLine("        }");
+
         sw.WriteLine("    }");
-        }
+        sw.WriteLine();
+    }
 }
