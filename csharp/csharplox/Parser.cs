@@ -12,9 +12,20 @@ public class Parser
     private readonly List<Token> _tokens;
     private int current = 0;
 
+    private delegate Expr RuleHandler();
+    private readonly Dictionary<ParserRule, RuleHandler> _ruleHandlers;
+
     public Parser(List<Token> tokens)
     {
-       _tokens = tokens; 
+       _tokens = tokens;
+       _ruleHandlers = new()
+       {
+            {ParserRule.COMPARISON, Comparison},
+            {ParserRule.FACTOR, Factor},
+            {ParserRule.TERM, Term},
+            {ParserRule.EQUALITY, Equality},
+            {ParserRule.UNARY, Unary}
+       };
     }
 
     private Expr Expression()
@@ -54,26 +65,14 @@ public class Parser
         return Primary();
     }
 
-    private Expr GetRule(ParserRule rule)
-    {
-        return rule switch
-        {
-            ParserRule.COMPARISON => Comparison(),
-            ParserRule.FACTOR => Factor(),
-            ParserRule.TERM => Term(),
-            ParserRule.EQUALITY => Equality(),
-            ParserRule.UNARY => Unary()
-        };
-    }
-
     private Expr ParseLeftAssociative(ParserRule rule, params TokenType[] types)
     {
-        Expr expr = GetRule(rule);
+        Expr expr = _ruleHandlers[rule]();
 
         while(Match(types))
         {
             Token op = Previous();
-            Expr right = GetRule(rule);
+            Expr right = _ruleHandlers[rule]();
             return new Expr.Binary(expr, op, right);
         }
 
