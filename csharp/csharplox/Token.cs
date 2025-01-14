@@ -5,21 +5,21 @@ namespace csharplox;
 
 public class Token
 {
-    public readonly TokenType _type;
-    public readonly string _lexeme;
-    public readonly Object _literal;
-    public readonly int _line;
+    public readonly TokenType Type;
+    public readonly string Lexeme;
+    public readonly Object Literal;
+    public readonly int Line;
 
     public Token(TokenType tokenType, string lexeme, Object literal, int line)
     {
-        _type = tokenType;
-        _lexeme = lexeme;
-        _literal = literal;
-        _line = line;   
+        Type = tokenType;
+        Lexeme = lexeme;
+        Literal = literal;
+        Line = line;   
     }
 
     public override string ToString()
     {
-        return $"{_type} {_lexeme} {_literal}"; 
+        return $"{Type} {Lexeme} {Literal}"; 
     }
 }
