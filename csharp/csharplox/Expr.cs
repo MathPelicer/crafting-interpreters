@@ -1,6 +1,6 @@
 namespace csharplox;
 
-abstract class Expr{
+public abstract class Expr{
     public interface IVisitor<T> {
         public T VisitBinaryExpr(Binary expr);
         public T VisitGroupingExpr(Grouping expr);

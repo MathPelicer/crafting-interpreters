@@ -1,14 +1,8 @@
-using System;
-using System.ComponentModel.Design;
-using System.Net;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Transactions;
-
 namespace csharplox;
 
 public class Parser
 {
+    private class ParserError : SystemException {}
     private readonly List<Token> _tokens;
     private int current = 0;
 
@@ -26,6 +20,18 @@ public class Parser
             {ParserRule.EQUALITY, Equality},
             {ParserRule.UNARY, Unary}
        };
+    }
+
+    public Expr Parse()
+    {
+        try 
+        {
+            return Expression();
+        } 
+        catch (ParserError err)
+        {
+            return null;
+        }
     }
 
     private Expr Expression()
@@ -93,11 +99,49 @@ public class Parser
             Consume(TokenType.RIGHT_PAREN, "Expect ')' after expression");
             return new Expr.Grouping(expr);
         }
+
+        throw Error(Peek(), "Expect expression.");
     }
 
-    private void Consume(TokenType rIGHT_PAREN, string v)
+    private Token Consume(TokenType type, string message)
     {
-        throw new NotImplementedException();
+        if(Check(type))
+        {
+            return Advance();
+        }
+
+        throw Error(Peek(), message);
+    }
+
+    private ParserError Error(Token token, string message)
+    {
+        Lox.Error(token, message);
+        return new ParserError();
+    }
+
+    private void Synchronize()
+    {
+        Advance();
+
+        while(!IsAtEnd())
+        {
+            if(Previous().Type == TokenType.SEMICOLON) return;
+
+            switch(Peek().Type)
+            {
+                case TokenType.CLASS:
+                case TokenType.FUN:
+                case TokenType.VAR:
+                case TokenType.FOR:
+                case TokenType.IF:
+                case TokenType.WHILE:
+                case TokenType.PRINT:
+                case TokenType.RETURN:
+                    return;
+            }
+
+            Advance();
+        }
     }
 
     private bool Match(params TokenType[] types)
@@ -125,7 +169,7 @@ public class Parser
 
     private Token Previous()
     {
-        return _tokens[current];
+        return _tokens[current - 1];
     }
 
     private bool IsAtEnd()

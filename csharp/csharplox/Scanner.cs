@@ -1,6 +1,3 @@
-using System.Data.Common;
-using System.Globalization;
-
 namespace csharplox;
 
 public class Scanner(string source)
@@ -119,7 +116,7 @@ public class Scanner(string source)
 
     private void AddToken(TokenType tokenType, Object literal)
     {
-        string text = _source.Substring(start, current);
+        string text = _source[start..current];
         _tokens.Add(new Token(tokenType, text, literal, line));
     }
 
@@ -178,7 +175,9 @@ public class Scanner(string source)
         }
 
         Advance();
-        var value = _source.Substring(start + 1, current - 1);
+        var beginningString = start+1;
+        var endString = current-1;
+        var value = _source[beginningString..endString];
         AddToken(TokenType.STRING, value);
     }
 
@@ -204,7 +203,7 @@ public class Scanner(string source)
             }
         }
 
-        AddToken(TokenType.NUMBER, double.Parse(_source.Substring(start, current)));
+        AddToken(TokenType.NUMBER, double.Parse(_source[start..current]));
     }
 
     private void Identifier()
@@ -214,7 +213,7 @@ public class Scanner(string source)
             Advance();
         }
 
-        var text = _source.Substring(start, current);
+        var text = _source[start..current];
         if (!_keywords.TryGetValue(text, out TokenType type))
         {
             type = TokenType.IDENTIFIER;
